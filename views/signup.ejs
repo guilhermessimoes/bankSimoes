@@ -1,0 +1,59 @@
+<%- include("./partials/header") %>
+<style>
+    body{
+        background-image: url(../images/bank.jpg);
+        background-size: cover;
+        color: #fff;
+    } 
+</style>
+<div class="row login">
+    <form action="<%= formAction %>" method="POST">       
+        <div class="col s12 l4 offset-l4">            
+            <div class="card">
+                <div class="card-content container">
+                    <div class="card-action white-text center">
+                        <h3 class="white-text">Registrar-se</h3>                        
+                    </div>
+                    <% if(typeof alert != 'undefined'){ %>
+                        <% alert.forEach(function(error){ %>
+                          <div class="materialert error">
+                            <div class="material-icons">error_outline</div>
+                            <%= error.msg %>
+                          </div>
+                        <% }) %>
+                    <% } %>                                    
+                    <% if (message) { %>
+                        <div class="materialert error">
+                            <div class="material-icons">error_outline</div>
+                            <%= message %>
+                        </div>
+                    <% } %>
+                    <div class="row">                        
+                        <div class="input-field col s12">
+                            <input value="" id="nome" type="text" class="validate white-text" name="nome">
+                            <label for="nome" class="white-text">Nome completo</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input value="" id="cpf" type="text" class="validate white-text" name="cpf">
+                            <label for="cpf" class="white-text">CPF</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input value="" id="password" type="password" class="validate white-text" name="senha">
+                            <label for="password" class="white-text">Senha</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input value="" id="confirmPassword" type="password" class="validate white-text" name="confirmacaoSenha">
+                            <label for="confirmPassword" class="white-text">Confirmar Senha</label>
+                        </div>
+                    </div>
+                    <div class="center" id="botoes_registrar">
+                        <a href="/login" class="red darken-3  btn">Voltar</a>
+                        <button type="submit" class="green btn">Entrar</button>
+                    </div>                
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<%- include("./partials/footer") %>

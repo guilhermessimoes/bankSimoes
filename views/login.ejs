@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="/stylesheets/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+      <body>
+        <main>
+<style>
+    body{
+        background-image: url(../images/bankLogin.jpg);
+        background-size: cover;
+        color: #fff;
+    } 
+</style>
+<div class="row login">
+    <form action="<%= formAction %>" method="POST">
+        <div class="col s12 l4 offset-l4">
+            <div class="card">
+                <div class="card-content container">
+                    <div class="card-action white-text center">
+                        <h3>Entrar</h3>
+                    </div> 
+                    <% if(typeof alert != 'undefined'){ %>
+                        <% alert.forEach(function(error){ %>
+                          <div class="materialert error">
+                            <div class="material-icons">error_outline</div>
+                            <%= error.msg %>
+                          </div>
+                        <% }) %>
+                    <% } %>                    
+                    <%if (flashMessage.length > 0) { %>
+                        <div class="materialert success">
+                            <div class="material-icons">check</div>
+                            <%= flashMessage %>
+                        </div>
+                      <% } %>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input value="" id="cpf" type="text" class="validate white-text" name="cpf">
+                            <label for="cpf" class="white-text">CPF</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input value="" id="password" type="password" class="validate white-text" name="senha">
+                            <label for="password" class="white-text">Senha</label>
+                        </div>
+                    </div>
+                    <div class="center" id="botoes_registrar">
+                        <a href="/" class="red darken-3  btn">Voltar</a>
+                        <button type="submit" class="green btn">Entrar</button>
+                    </div>
+                    <div class="row center ">
+                        <span>Não tem acesso? <a href="/login/signup"> Clica aqui para se registrar</a></span>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--JavaScript at end of body for optimized loading-->
+<script type="text/javascript" src="/javascripts/materialize.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.sidenav').sidenav();          
+  });
+</script>
+</body>
+</html>
