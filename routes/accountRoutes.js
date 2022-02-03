@@ -12,7 +12,7 @@ router.get('/withdraw', verifyLogin, accountController.withdrawGet)
 router.post('/withdraw', verifyLogin, accountController.withdrawPost)
 
 router.get('/transfer', verifyLogin, accountController.transferGet)
-//router.post('/transfer', verifyLogin, accountController.transferPost)
+router.post('/transfer', verifyLogin, accountController.transferPost)
 
 
 

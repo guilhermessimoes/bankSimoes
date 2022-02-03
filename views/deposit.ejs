@@ -21,6 +21,12 @@
                           </div>
                         <% }) %>
                     <% } %>
+                    <% if (error) { %>
+                        <div class="materialert error">
+                            <div class="material-icons">error_outline</div>
+                            <%= error %>
+                        </div>
+                    <% } %>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l12">

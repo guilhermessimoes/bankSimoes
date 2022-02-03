@@ -1,5 +1,6 @@
 const db = require('../models'); 
 const formatMoney = require('../utils/formatMoney')
+const validatorCPF =  require('cpf-cnpj-validator')
 
  const accountController = {
     accountGet: async(req,res)=>{
@@ -10,7 +11,7 @@ const formatMoney = require('../utils/formatMoney')
     },
 
     depositGet: async(_req,res)=>{      
-        res.render("deposit", {formAction:"/account/deposit"})
+        res.render("deposit", {formAction:"/account/deposit", error: undefined})
     },
 
     depositPost: async(req,res)=>{
@@ -19,7 +20,7 @@ const formatMoney = require('../utils/formatMoney')
         const usuarioEncontrato = await db.Usuario.findByPk(req.session.user.user_id);
 
         if (depositUser > 2000) {
-            return res.status(400).json({error: "Deposito maxímo de R$ 2.000,00"})
+            return res.render("deposit", {formAction:"/account/deposit", error: "Deposito maxímo de R$ 2.000,00"})            
         }
 
         depositUser+=usuarioEncontrato.balance
@@ -33,7 +34,7 @@ const formatMoney = require('../utils/formatMoney')
     },
 
     withdrawGet: async(_req,res)=>{      
-        res.render("withdraw", {formAction:"/account/withdraw"})
+        res.render("withdraw", {formAction:"/account/withdraw", error: undefined})
     },
 
     withdrawPost: async(req,res)=>{
@@ -42,7 +43,7 @@ const formatMoney = require('../utils/formatMoney')
         const usuarioEncontrato = await db.Usuario.findByPk(req.session.user.user_id);
 
         if (usuarioEncontrato.balance < withdrawUser) {
-            return res.status(400).json({error: "Saldo Insuficiente"})
+            return res.render("withdraw", {formAction:"/account/withdraw", error: "Saldo insuficiente"}) 
         }
 
         usuarioEncontrato.balance-=withdrawUser 
@@ -58,23 +59,27 @@ const formatMoney = require('../utils/formatMoney')
    
 
     transferGet: async(_req,res)=>{      
-        res.render("transfer", {formAction:"/transfer"})
+        res.render("transfer", {formAction:"/account/transfer", error: undefined})
     },
 
     transferPost: async(req,res)=>{
-        let withdrawUser = parseInt(req.body.transfer)
-        console.log("withdrawUser", req.body)
-        const usuarioEncontrato = await db.Usuario.findByPk(req.session.user.user_id);
+        let transferUser = parseInt(req.body.transfer)
+        const withdrawCpf = req.body.cpf
+        const usuarioEncontrato = await db.Usuario.findOne({where: {cpf: withdrawCpf}});
 
-        if (usuarioEncontrato.balance < withdrawUser) {
-            return res.status(400).json({error: "Saldo Insuficiente"})
+        if (!validatorCPF.cpf.isValid(withdrawCpf)) {            
+            return res.render('transfer',{ formAction:"/account/transfer", error: 'CPF inválido'})
+        }  
+
+        if (!usuarioEncontrato) {
+            return res.render("transfer", {formAction:"/account/transfer", error: "CPF não cadastrado."}) 
         }
 
-        usuarioEncontrato.balance-=withdrawUser 
+        usuarioEncontrato.balance+=transferUser 
 
         await db.Usuario.update({ balance: usuarioEncontrato.balance}, {
             where: {
-              id: usuarioEncontrato.id
+              cpf: usuarioEncontrato.cpf
             }
         });
 
